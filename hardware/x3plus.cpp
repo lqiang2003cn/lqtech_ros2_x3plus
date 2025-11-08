@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "ros2_control_demo_example_1/rrbot.hpp"
+// should based on the dir $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/hardware/include>
+// which is configured in the cmakelist file
+#include "lqtech_ros2_x3plus/x3plus.hpp"
 
 #include <chrono>
 #include <cmath>
@@ -26,9 +28,9 @@
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-namespace ros2_control_demo_example_1
+namespace lqtech_ros2_x3plus
 {
-hardware_interface::CallbackReturn RRBotSystemPositionOnlyHardware::on_init(
+hardware_interface::CallbackReturn X3PlusPositionOnlyHardware::on_init(
   const hardware_interface::HardwareInfo & info)
 {
   if (
@@ -89,7 +91,7 @@ hardware_interface::CallbackReturn RRBotSystemPositionOnlyHardware::on_init(
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
-hardware_interface::CallbackReturn RRBotSystemPositionOnlyHardware::on_configure(
+hardware_interface::CallbackReturn X3PlusPositionOnlyHardware::on_configure(
   const rclcpp_lifecycle::State & /*previous_state*/)
 {
   // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
@@ -114,7 +116,7 @@ hardware_interface::CallbackReturn RRBotSystemPositionOnlyHardware::on_configure
 }
 
 std::vector<hardware_interface::StateInterface>
-RRBotSystemPositionOnlyHardware::export_state_interfaces()
+X3PlusPositionOnlyHardware::export_state_interfaces()
 {
   std::vector<hardware_interface::StateInterface> state_interfaces;
   for (uint i = 0; i < info_.joints.size(); i++)
@@ -128,7 +130,7 @@ RRBotSystemPositionOnlyHardware::export_state_interfaces()
 }
 
 std::vector<hardware_interface::CommandInterface>
-RRBotSystemPositionOnlyHardware::export_command_interfaces()
+X3PlusPositionOnlyHardware::export_command_interfaces()
 {
   std::vector<hardware_interface::CommandInterface> command_interfaces;
   for (uint i = 0; i < info_.joints.size(); i++)
@@ -141,7 +143,7 @@ RRBotSystemPositionOnlyHardware::export_command_interfaces()
   return command_interfaces;
 }
 
-hardware_interface::CallbackReturn RRBotSystemPositionOnlyHardware::on_activate(
+hardware_interface::CallbackReturn X3PlusPositionOnlyHardware::on_activate(
   const rclcpp_lifecycle::State & /*previous_state*/)
 {
   // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
@@ -165,7 +167,7 @@ hardware_interface::CallbackReturn RRBotSystemPositionOnlyHardware::on_activate(
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
-hardware_interface::CallbackReturn RRBotSystemPositionOnlyHardware::on_deactivate(
+hardware_interface::CallbackReturn X3PlusPositionOnlyHardware::on_deactivate(
   const rclcpp_lifecycle::State & /*previous_state*/)
 {
   // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
@@ -183,7 +185,7 @@ hardware_interface::CallbackReturn RRBotSystemPositionOnlyHardware::on_deactivat
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
-hardware_interface::return_type RRBotSystemPositionOnlyHardware::read(
+hardware_interface::return_type X3PlusPositionOnlyHardware::read(
   const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
 {
   // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
@@ -204,7 +206,7 @@ hardware_interface::return_type RRBotSystemPositionOnlyHardware::read(
   return hardware_interface::return_type::OK;
 }
 
-hardware_interface::return_type RRBotSystemPositionOnlyHardware::write(
+hardware_interface::return_type X3PlusPositionOnlyHardware::write(
   const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
 {
   // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
@@ -228,4 +230,4 @@ hardware_interface::return_type RRBotSystemPositionOnlyHardware::write(
 #include "pluginlib/class_list_macros.hpp"
 
 PLUGINLIB_EXPORT_CLASS(
-  ros2_control_demo_example_1::RRBotSystemPositionOnlyHardware, hardware_interface::SystemInterface)
+  lqtech_ros2_x3plus::X3PlusPositionOnlyHardware, hardware_interface::SystemInterface)

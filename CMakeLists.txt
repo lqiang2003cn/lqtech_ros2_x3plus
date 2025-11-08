@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 project(lqtech_ros2_x3plus LANGUAGES CXX)
 
+message("lqtech_ros2_x3plus project source dir: ${PROJECT_SOURCE_DIR}")     
+
 if(CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
   add_compile_options(-Wall -Wextra)
 endif()
@@ -15,6 +17,8 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   rclcpp
   rclcpp_lifecycle
 )
+set(HARDWARE_LIB_NAME "lqtech_x3plus_hardware_lib")
+
 
 # find dependencies
 find_package(backward_ros REQUIRED)
@@ -23,40 +27,40 @@ foreach(Dependency IN ITEMS ${THIS_PACKAGE_INCLUDE_DEPENDS})
   find_package(${Dependency} REQUIRED)
 endforeach()
 
-## COMPILE
-add_library(
-  ros2_x3plus_lib_lqtech
-  SHARED
-  hardware/x3plus.cpp
+######################################## compile ########################################
+# source file of the lib
+
+add_library(${HARDWARE_LIB_NAME} SHARED hardware/x3plus.cpp)
+# include file of the lib
+target_compile_features(${HARDWARE_LIB_NAME} PUBLIC cxx_std_17)
+target_include_directories(${HARDWARE_LIB_NAME} PUBLIC
+$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/hardware/include> # used by the compiler, not by the ide, this must be the absolute path
+$<INSTALL_INTERFACE:include/${PROJECT_NAME}> # relative path. tells users to how to find the include folder, should be consistent with DESTINATION include/lqtech_ros2_x3plus
 )
-target_compile_features(ros2_x3plus_lib_lqtech PUBLIC cxx_std_17)
-target_include_directories(ros2_x3plus_lib_lqtech PUBLIC
-$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/hardware/include>
-$<INSTALL_INTERFACE:include/ros2_x3plus_lib_lqtech>
-)
+# dependencies of the lib
 ament_target_dependencies(
-  ros2_x3plus_lib_lqtech PUBLIC
+  ${HARDWARE_LIB_NAME} PUBLIC
   ${THIS_PACKAGE_INCLUDE_DEPENDS}
 )
+pluginlib_export_plugin_description_file(hardware_interface ${PROJECT_NAME}.xml)
 
-# Export hardware plugins
-pluginlib_export_plugin_description_file(hardware_interface ros2_x3plus_lqtech.xml)
 
-# INSTALL
+
+######################################## install ########################################
 install(
   DIRECTORY hardware/include/
-  DESTINATION include/ros2_x3plus_lib_lqtech
+  DESTINATION include/${PROJECT_NAME}
 )
 install(
   DIRECTORY description/launch description/ros2_control description/urdf
-  DESTINATION share/ros2_x3plus_lib_lqtech
+  DESTINATION share/${PROJECT_NAME}
 )
 install(
   DIRECTORY bringup/launch bringup/config
-  DESTINATION share/ros2_x3plus_lib_lqtech
+  DESTINATION share/${PROJECT_NAME}
 )
-install(TARGETS ros2_x3plus_lib_lqtech
-  EXPORT ros2_x3plus_lib_lqtech
+install(TARGETS ${HARDWARE_LIB_NAME}
+  EXPORT export_${HARDWARE_LIB_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
@@ -73,6 +77,6 @@ install(TARGETS ros2_x3plus_lib_lqtech
 
 
 ## EXPORTS
-ament_export_targets(export_ros2_x3plus_lib_lqtech HAS_LIBRARY_TARGET)
+ament_export_targets(export_${HARDWARE_LIB_NAME} HAS_LIBRARY_TARGET)
 ament_export_dependencies(${THIS_PACKAGE_INCLUDE_DEPENDS})
 ament_package()

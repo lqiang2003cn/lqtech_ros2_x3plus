@@ -29,12 +29,13 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
-namespace ros2_control_demo_example_1
+
+namespace lqtech_ros2_x3plus
 {
-class RRBotSystemPositionOnlyHardware : public hardware_interface::SystemInterface
+class X3PlusPositionOnlyHardware : public hardware_interface::SystemInterface
 {
 public:
-  RCLCPP_SHARED_PTR_DEFINITIONS(RRBotSystemPositionOnlyHardware);
+  RCLCPP_SHARED_PTR_DEFINITIONS(X3PlusPositionOnlyHardware);
 
   hardware_interface::CallbackReturn on_init(
     const hardware_interface::HardwareInfo & info) override;
