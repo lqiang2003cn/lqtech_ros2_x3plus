@@ -1,6 +1,6 @@
-<library path="ros2_x3plus_lib_lqtech">
-  <class name="ros2_x3plus_lib_lqtech/X3PlusPositionOnlyHardware"
-         type="ros2_x3plus_lib_lqtech::X3PlusPositionOnlyHardware"
+<library path="lqtech_x3plus_hardware_lib">
+  <class name="lqtech_x3plus_hardware_lib/X3PlusPositionOnlyHardware"
+         type="lqtech_ros2_x3plus::X3PlusPositionOnlyHardware"
          base_class_type="hardware_interface::SystemInterface">
     <description>
       The hardware class for x3plus

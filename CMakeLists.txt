@@ -48,11 +48,11 @@ pluginlib_export_plugin_description_file(hardware_interface ${PROJECT_NAME}.xml)
 
 ######################################## install ########################################
 install(
-  DIRECTORY hardware/include/
+  DIRECTORY hardware/include
   DESTINATION include/${PROJECT_NAME}
 )
 install(
-  DIRECTORY description/launch description/ros2_control description/urdf
+  DIRECTORY description/launch description/ros2_control description/urdf description/rviz description/meshes
   DESTINATION share/${PROJECT_NAME}
 )
 install(
