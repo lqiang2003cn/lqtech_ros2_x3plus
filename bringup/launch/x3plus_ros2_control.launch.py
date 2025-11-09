@@ -100,11 +100,11 @@ def generate_launch_description():
         arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
     )
 
-    # robot_controller_spawner = Node(
-    #     package="controller_manager",
-    #     executable="spawner",
-    #     arguments=["forward_position_controller", "--controller-manager", "/controller_manager"],
-    # )
+    forward_position_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["forward_position_controller", "--controller-manager", "/controller_manager"],
+    )
 
     # # Delay rviz start after `joint_state_broadcaster`
     # delay_rviz_after_joint_state_broadcaster_spawner = RegisterEventHandler(
@@ -128,7 +128,7 @@ def generate_launch_description():
         rviz_node,
         control_node,
         joint_state_broadcaster_spawner,
-        # robot_controller_spawner,
+        forward_position_controller_spawner
         # delay_rviz_after_joint_state_broadcaster_spawner,
         # delay_joint_state_broadcaster_after_robot_controller_spawner,
     ]
