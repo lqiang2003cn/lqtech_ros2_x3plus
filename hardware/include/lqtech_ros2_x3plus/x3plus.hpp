@@ -29,6 +29,12 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
+#include "lqtech_ros2_x3plus/x3plus.grpc.pb.h"
+
+using x3plus::RosmasterServices;
+using x3plus::Empty;
+using x3plus::JointPosititonArray;
+
 
 namespace lqtech_ros2_x3plus
 {
@@ -70,6 +76,9 @@ public:
    * \return clock of the SystemInterface.
    */
   rclcpp::Clock::SharedPtr get_clock() const { return clock_; }
+  
+  // just declare, no implementation. If you write {} after the following, it will be regarded as a definitaion.
+  std::string grpc_get_joint_array();
 
 private:
   // Parameters for the RRBot simulation
@@ -84,6 +93,7 @@ private:
   // Store the command for the simulated robot
   std::vector<double> hw_commands_;
   std::vector<double> hw_states_;
+  std::unique_ptr<RosmasterServices::Stub> stub_;
 };
 
 }  // namespace ros2_control_demo_example_1

@@ -33,12 +33,24 @@
 #include "rclcpp/rclcpp.hpp"
 #include "lqtech_ros2_x3plus/x3plus.hpp"
 
+ABSL_FLAG(std::string, target, "192.168.31.142:50051", "Server address");
+
+using grpc::Channel;
+using grpc::ClientContext;
+using grpc::Status;
+using x3plus::RosmasterServices;
+using x3plus::JointPosititonArray;
+using x3plus::Empty;
 
 namespace lqtech_ros2_x3plus
 {
 hardware_interface::CallbackReturn X3PlusPositionOnlyHardware::on_init(
   const hardware_interface::HardwareInfo & info)
 {
+  std::string target_str = absl::GetFlag(FLAGS_target);
+  auto channel = grpc::CreateChannel(target_str, grpc::InsecureChannelCredentials());
+  stub_ = RosmasterServices::NewStub(channel);
+
   if (
     hardware_interface::SystemInterface::on_init(info) !=
     hardware_interface::CallbackReturn::SUCCESS)
@@ -209,6 +221,10 @@ hardware_interface::return_type X3PlusPositionOnlyHardware::read(
   RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 500, "%s", ss.str().c_str());
   // END: This part here is for exemplary purposes - Please do not copy to your production code
 
+  // test: call a grpc:
+  std::string reply = this->grpc_get_joint_array();
+  std::cout << "Greeter received: " << reply << std::endl;
+  
   return hardware_interface::return_type::OK;
 }
 
@@ -231,7 +247,38 @@ hardware_interface::return_type X3PlusPositionOnlyHardware::write(
   return hardware_interface::return_type::OK;
 }
 
-}  // namespace ros2_control_demo_example_1
+// must specify 'X3PlusPositionOnlyHardware::' before method 'SayHello', otherwise, stub_ could not be found 
+std::string X3PlusPositionOnlyHardware::grpc_get_joint_array() {
+  // Data we are sending to the server.
+  Empty request;
+
+  // Container for the data we expect from the server.
+  JointPosititonArray reply;
+
+  // Context for the client. It could be used to convey extra information to
+  // the server and/or tweak certain RPC behaviors.
+  ClientContext context;
+
+  // The actual RPC.
+  Status status = stub_->getJointPositionArray(&context, request, &reply);
+
+  // Act upon its status.
+  if (status.ok()) {
+    std::cout << "Received " << reply.joint_array_size() << " joint values." << std::endl;
+    for (int i = 0; i < reply.joint_array_size(); ++i) {
+        int32_t value = reply.joint_array(i);
+        std::cout << "Joint " << i << ": " << value << std::endl;
+    }
+    return "ok";
+  } else {
+    std::cout << status.error_code() << ": " << status.error_message()
+              << std::endl;
+    return "lqtechError: RPC failed";
+  }
+}
+
+
+}  // namespace lqtech_ros2_x3plus
 
 #include "pluginlib/class_list_macros.hpp"
 

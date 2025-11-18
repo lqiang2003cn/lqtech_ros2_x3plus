@@ -75,19 +75,19 @@ target_link_libraries(x3plus_grpc_proto
 set(hardware_dir "${CMAKE_CURRENT_SOURCE_DIR}/hardware")
 
 # as a sample of grpc client and service
-foreach(_target greeter_client greeter_server)
-  add_executable(${_target} "${hardware_dir}/${_target}.cc")
-  target_include_directories(${_target} PUBLIC "${grpc_dir}")
-  target_link_libraries(${_target}
-    x3plus_grpc_proto
-    absl::flags_parse
-    absl::absl_log
-    absl::log_initialize
-    absl::log_globals
-    ${_REFLECTION}
-    ${_GRPC_GRPCPP}
-    ${_PROTOBUF_LIBPROTOBUF})
-endforeach()
+# foreach(_target greeter_client greeter_server)
+#   add_executable(${_target} "${hardware_dir}/${_target}.cc")
+#   target_include_directories(${_target} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/grpc")
+#   target_link_libraries(${_target}
+#     x3plus_grpc_proto
+#     absl::flags_parse
+#     absl::absl_log
+#     absl::log_initialize
+#     absl::log_globals
+#     ${_REFLECTION}
+#     ${_GRPC_GRPCPP}
+#     ${_PROTOBUF_LIBPROTOBUF})
+# endforeach()
 
 
 set(HARDWARE_LIB_NAME "lqtech_x3plus_hardware_lib")
@@ -96,9 +96,9 @@ add_library(${HARDWARE_LIB_NAME} SHARED hardware/x3plus.cpp)
 # include file of the lib
 # target_compile_features(${HARDWARE_LIB_NAME} PUBLIC cxx_std_17)
 target_include_directories(${HARDWARE_LIB_NAME} PUBLIC
-$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/hardware/include> # used by the compiler, not by the ide, this must be the absolute path
+$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/hardware/include>
 $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/grpc> 
-$<INSTALL_INTERFACE:include/${PROJECT_NAME}> # relative path. tells users to how to find the include folder, should be consistent with DESTINATION include/lqtech_ros2_x3plus
+$<INSTALL_INTERFACE:include/${PROJECT_NAME}>
 )
 target_link_libraries(${HARDWARE_LIB_NAME} PUBLIC
     x3plus_grpc_proto
@@ -123,17 +123,18 @@ install(
   FILES
     grpc/lqtech_ros2_x3plus/x3plus.grpc.pb.h
     grpc/lqtech_ros2_x3plus/x3plus.pb.h
-  DESTINATION include/${PROJECT_NAME}/${PROJECT_NAME}
+  DESTINATION include/${PROJECT_NAME}/${PROJECT_NAME} # the first is a project name, the second is a folder name
 )
 
-# if DIRECTORY hardware/include and hardware/include is not empty, cmake will create include folder under include/${PROJECT_NAME} and copy everything to include/${PROJECT_NAME}
 # if DIRECTORY hardware/include and hardware/include is empty, cmake will do nothing
-# if DIRECTORY hardware/include/, cmake will copy all the files under hardware/include to the folder nclude/${PROJECT_NAME}
+# if DIRECTORY hardware/include/, cmake will copy all the files and folders under hardware/include to the folder nclude/${PROJECT_NAME}
 install(
   DIRECTORY hardware/include/
   DESTINATION include/${PROJECT_NAME}
 )
 
+# if use 'DIRECTORY hardware/foldername' and 'hardware/foldername' is not empty, cmake will create 'foldername' folder under share/${PROJECT_NAME} 
+# and copy every  file and folder under 'hardware/foldername' to share/${PROJECT_NAME}
 install(
   DIRECTORY description/launch description/ros2_control description/urdf description/rviz description/meshes
   DESTINATION share/${PROJECT_NAME}
@@ -151,16 +152,16 @@ install(TARGETS ${HARDWARE_LIB_NAME} x3plus_grpc_proto
   RUNTIME DESTINATION bin
 )
 
-# # if(BUILD_TESTING)
-# #   find_package(ament_cmake_pytest REQUIRED)
-# #   ament_add_pytest_test(example_1_urdf_xacro test/test_urdf_xacro.py)
-# #   ament_add_pytest_test(view_example_1_launch test/test_view_robot_launch.py)
-# #   ament_add_pytest_test(run_example_1_launch test/test_rrbot_launch.py)
-# #   ament_add_pytest_test(run_example_1_launch_cli_direct test/test_rrbot_launch_cli_direct.py)
-# # endif()
+# if(BUILD_TESTING)
+#   find_package(ament_cmake_pytest REQUIRED)
+#   ament_add_pytest_test(example_1_urdf_xacro test/test_urdf_xacro.py)
+#   ament_add_pytest_test(view_example_1_launch test/test_view_robot_launch.py)
+#   ament_add_pytest_test(run_example_1_launch test/test_rrbot_launch.py)
+#   ament_add_pytest_test(run_example_1_launch_cli_direct test/test_rrbot_launch_cli_direct.py)
+# endif()
 
 
-## EXPORTS
+## EXPORTS: for ros2
 ament_export_targets(export_${HARDWARE_LIB_NAME} HAS_LIBRARY_TARGET)
 ament_export_dependencies(${THIS_PACKAGE_INCLUDE_DEPENDS})
 ament_package()

@@ -20,138 +20,111 @@
 #include <grpcpp/impl/service_type.h>
 #include <grpcpp/support/sync_stream.h>
 #include <grpcpp/ports_def.inc>
-namespace helloworld {
+namespace x3plus {
 
-static const char* Greeter_method_names[] = {
-  "/helloworld.Greeter/SayHello",
-  "/helloworld.Greeter/SayHelloStreamReply",
-  "/helloworld.Greeter/SayHelloBidiStream",
+static const char* RosmasterServices_method_names[] = {
+  "/x3plus.RosmasterServices/getJointPositionArray",
+  "/x3plus.RosmasterServices/setJointPositionArray",
 };
 
-std::unique_ptr< Greeter::Stub> Greeter::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
+std::unique_ptr< RosmasterServices::Stub> RosmasterServices::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
   (void)options;
-  std::unique_ptr< Greeter::Stub> stub(new Greeter::Stub(channel, options));
+  std::unique_ptr< RosmasterServices::Stub> stub(new RosmasterServices::Stub(channel, options));
   return stub;
 }
 
-Greeter::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
-  : channel_(channel), rpcmethod_SayHello_(Greeter_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SayHelloStreamReply_(Greeter_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SayHelloBidiStream_(Greeter_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::BIDI_STREAMING, channel)
+RosmasterServices::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
+  : channel_(channel), rpcmethod_getJointPositionArray_(RosmasterServices_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_setJointPositionArray_(RosmasterServices_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
-::grpc::Status Greeter::Stub::SayHello(::grpc::ClientContext* context, const ::helloworld::HelloRequest& request, ::helloworld::HelloReply* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::helloworld::HelloRequest, ::helloworld::HelloReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SayHello_, context, request, response);
+::grpc::Status RosmasterServices::Stub::getJointPositionArray(::grpc::ClientContext* context, const ::x3plus::Empty& request, ::x3plus::JointPosititonArray* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::x3plus::Empty, ::x3plus::JointPosititonArray, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_getJointPositionArray_, context, request, response);
 }
 
-void Greeter::Stub::async::SayHello(::grpc::ClientContext* context, const ::helloworld::HelloRequest* request, ::helloworld::HelloReply* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::helloworld::HelloRequest, ::helloworld::HelloReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SayHello_, context, request, response, std::move(f));
+void RosmasterServices::Stub::async::getJointPositionArray(::grpc::ClientContext* context, const ::x3plus::Empty* request, ::x3plus::JointPosititonArray* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::x3plus::Empty, ::x3plus::JointPosititonArray, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_getJointPositionArray_, context, request, response, std::move(f));
 }
 
-void Greeter::Stub::async::SayHello(::grpc::ClientContext* context, const ::helloworld::HelloRequest* request, ::helloworld::HelloReply* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SayHello_, context, request, response, reactor);
+void RosmasterServices::Stub::async::getJointPositionArray(::grpc::ClientContext* context, const ::x3plus::Empty* request, ::x3plus::JointPosititonArray* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_getJointPositionArray_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::helloworld::HelloReply>* Greeter::Stub::PrepareAsyncSayHelloRaw(::grpc::ClientContext* context, const ::helloworld::HelloRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::helloworld::HelloReply, ::helloworld::HelloRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SayHello_, context, request);
+::grpc::ClientAsyncResponseReader< ::x3plus::JointPosititonArray>* RosmasterServices::Stub::PrepareAsyncgetJointPositionArrayRaw(::grpc::ClientContext* context, const ::x3plus::Empty& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::x3plus::JointPosititonArray, ::x3plus::Empty, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_getJointPositionArray_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::helloworld::HelloReply>* Greeter::Stub::AsyncSayHelloRaw(::grpc::ClientContext* context, const ::helloworld::HelloRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::x3plus::JointPosititonArray>* RosmasterServices::Stub::AsyncgetJointPositionArrayRaw(::grpc::ClientContext* context, const ::x3plus::Empty& request, ::grpc::CompletionQueue* cq) {
   auto* result =
-    this->PrepareAsyncSayHelloRaw(context, request, cq);
+    this->PrepareAsyncgetJointPositionArrayRaw(context, request, cq);
   result->StartCall();
   return result;
 }
 
-::grpc::ClientReader< ::helloworld::HelloReply>* Greeter::Stub::SayHelloStreamReplyRaw(::grpc::ClientContext* context, const ::helloworld::HelloRequest& request) {
-  return ::grpc::internal::ClientReaderFactory< ::helloworld::HelloReply>::Create(channel_.get(), rpcmethod_SayHelloStreamReply_, context, request);
+::grpc::Status RosmasterServices::Stub::setJointPositionArray(::grpc::ClientContext* context, const ::x3plus::JointPosititonArray& request, ::x3plus::ResultResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::x3plus::JointPosititonArray, ::x3plus::ResultResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_setJointPositionArray_, context, request, response);
 }
 
-void Greeter::Stub::async::SayHelloStreamReply(::grpc::ClientContext* context, const ::helloworld::HelloRequest* request, ::grpc::ClientReadReactor< ::helloworld::HelloReply>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::helloworld::HelloReply>::Create(stub_->channel_.get(), stub_->rpcmethod_SayHelloStreamReply_, context, request, reactor);
+void RosmasterServices::Stub::async::setJointPositionArray(::grpc::ClientContext* context, const ::x3plus::JointPosititonArray* request, ::x3plus::ResultResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::x3plus::JointPosititonArray, ::x3plus::ResultResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_setJointPositionArray_, context, request, response, std::move(f));
 }
 
-::grpc::ClientAsyncReader< ::helloworld::HelloReply>* Greeter::Stub::AsyncSayHelloStreamReplyRaw(::grpc::ClientContext* context, const ::helloworld::HelloRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::helloworld::HelloReply>::Create(channel_.get(), cq, rpcmethod_SayHelloStreamReply_, context, request, true, tag);
+void RosmasterServices::Stub::async::setJointPositionArray(::grpc::ClientContext* context, const ::x3plus::JointPosititonArray* request, ::x3plus::ResultResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_setJointPositionArray_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncReader< ::helloworld::HelloReply>* Greeter::Stub::PrepareAsyncSayHelloStreamReplyRaw(::grpc::ClientContext* context, const ::helloworld::HelloRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::helloworld::HelloReply>::Create(channel_.get(), cq, rpcmethod_SayHelloStreamReply_, context, request, false, nullptr);
+::grpc::ClientAsyncResponseReader< ::x3plus::ResultResponse>* RosmasterServices::Stub::PrepareAsyncsetJointPositionArrayRaw(::grpc::ClientContext* context, const ::x3plus::JointPosititonArray& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::x3plus::ResultResponse, ::x3plus::JointPosititonArray, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_setJointPositionArray_, context, request);
 }
 
-::grpc::ClientReaderWriter< ::helloworld::HelloRequest, ::helloworld::HelloReply>* Greeter::Stub::SayHelloBidiStreamRaw(::grpc::ClientContext* context) {
-  return ::grpc::internal::ClientReaderWriterFactory< ::helloworld::HelloRequest, ::helloworld::HelloReply>::Create(channel_.get(), rpcmethod_SayHelloBidiStream_, context);
+::grpc::ClientAsyncResponseReader< ::x3plus::ResultResponse>* RosmasterServices::Stub::AsyncsetJointPositionArrayRaw(::grpc::ClientContext* context, const ::x3plus::JointPosititonArray& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncsetJointPositionArrayRaw(context, request, cq);
+  result->StartCall();
+  return result;
 }
 
-void Greeter::Stub::async::SayHelloBidiStream(::grpc::ClientContext* context, ::grpc::ClientBidiReactor< ::helloworld::HelloRequest,::helloworld::HelloReply>* reactor) {
-  ::grpc::internal::ClientCallbackReaderWriterFactory< ::helloworld::HelloRequest,::helloworld::HelloReply>::Create(stub_->channel_.get(), stub_->rpcmethod_SayHelloBidiStream_, context, reactor);
-}
-
-::grpc::ClientAsyncReaderWriter< ::helloworld::HelloRequest, ::helloworld::HelloReply>* Greeter::Stub::AsyncSayHelloBidiStreamRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderWriterFactory< ::helloworld::HelloRequest, ::helloworld::HelloReply>::Create(channel_.get(), cq, rpcmethod_SayHelloBidiStream_, context, true, tag);
-}
-
-::grpc::ClientAsyncReaderWriter< ::helloworld::HelloRequest, ::helloworld::HelloReply>* Greeter::Stub::PrepareAsyncSayHelloBidiStreamRaw(::grpc::ClientContext* context, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderWriterFactory< ::helloworld::HelloRequest, ::helloworld::HelloReply>::Create(channel_.get(), cq, rpcmethod_SayHelloBidiStream_, context, false, nullptr);
-}
-
-Greeter::Service::Service() {
+RosmasterServices::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      Greeter_method_names[0],
+      RosmasterServices_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< Greeter::Service, ::helloworld::HelloRequest, ::helloworld::HelloReply, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
-          [](Greeter::Service* service,
+      new ::grpc::internal::RpcMethodHandler< RosmasterServices::Service, ::x3plus::Empty, ::x3plus::JointPosititonArray, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](RosmasterServices::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::helloworld::HelloRequest* req,
-             ::helloworld::HelloReply* resp) {
-               return service->SayHello(ctx, req, resp);
+             const ::x3plus::Empty* req,
+             ::x3plus::JointPosititonArray* resp) {
+               return service->getJointPositionArray(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      Greeter_method_names[1],
-      ::grpc::internal::RpcMethod::SERVER_STREAMING,
-      new ::grpc::internal::ServerStreamingHandler< Greeter::Service, ::helloworld::HelloRequest, ::helloworld::HelloReply>(
-          [](Greeter::Service* service,
+      RosmasterServices_method_names[1],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< RosmasterServices::Service, ::x3plus::JointPosititonArray, ::x3plus::ResultResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](RosmasterServices::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::helloworld::HelloRequest* req,
-             ::grpc::ServerWriter<::helloworld::HelloReply>* writer) {
-               return service->SayHelloStreamReply(ctx, req, writer);
-             }, this)));
-  AddMethod(new ::grpc::internal::RpcServiceMethod(
-      Greeter_method_names[2],
-      ::grpc::internal::RpcMethod::BIDI_STREAMING,
-      new ::grpc::internal::BidiStreamingHandler< Greeter::Service, ::helloworld::HelloRequest, ::helloworld::HelloReply>(
-          [](Greeter::Service* service,
-             ::grpc::ServerContext* ctx,
-             ::grpc::ServerReaderWriter<::helloworld::HelloReply,
-             ::helloworld::HelloRequest>* stream) {
-               return service->SayHelloBidiStream(ctx, stream);
+             const ::x3plus::JointPosititonArray* req,
+             ::x3plus::ResultResponse* resp) {
+               return service->setJointPositionArray(ctx, req, resp);
              }, this)));
 }
 
-Greeter::Service::~Service() {
+RosmasterServices::Service::~Service() {
 }
 
-::grpc::Status Greeter::Service::SayHello(::grpc::ServerContext* context, const ::helloworld::HelloRequest* request, ::helloworld::HelloReply* response) {
+::grpc::Status RosmasterServices::Service::getJointPositionArray(::grpc::ServerContext* context, const ::x3plus::Empty* request, ::x3plus::JointPosititonArray* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status Greeter::Service::SayHelloStreamReply(::grpc::ServerContext* context, const ::helloworld::HelloRequest* request, ::grpc::ServerWriter< ::helloworld::HelloReply>* writer) {
+::grpc::Status RosmasterServices::Service::setJointPositionArray(::grpc::ServerContext* context, const ::x3plus::JointPosititonArray* request, ::x3plus::ResultResponse* response) {
   (void) context;
   (void) request;
-  (void) writer;
-  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-}
-
-::grpc::Status Greeter::Service::SayHelloBidiStream(::grpc::ServerContext* context, ::grpc::ServerReaderWriter< ::helloworld::HelloReply, ::helloworld::HelloRequest>* stream) {
-  (void) context;
-  (void) stream;
+  (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
 
-}  // namespace helloworld
+}  // namespace x3plus
 #include <grpcpp/ports_undef.inc>
 
