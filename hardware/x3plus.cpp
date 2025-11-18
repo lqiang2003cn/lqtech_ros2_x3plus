@@ -28,10 +28,12 @@
 #include <grpcpp/grpcpp.h>
 #include "absl/flags/flag.h"
 #include "absl/flags/parse.h"
-#include "lqtech_ros2_x3plus/x3plus.grpc.pb.h"
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "lqtech_ros2_x3plus/x3plus.hpp"
+#include "lqtech_ros2_x3plus/x3plus.pb.h"
+#include "lqtech_ros2_x3plus/x3plus.grpc.pb.h"
+
 
 ABSL_FLAG(std::string, target, "192.168.31.142:50051", "Server address");
 
