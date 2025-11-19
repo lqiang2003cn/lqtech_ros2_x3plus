@@ -78,7 +78,13 @@ public:
   rclcpp::Clock::SharedPtr get_clock() const { return clock_; }
   
   // just declare, no implementation. If you write {} after the following, it will be regarded as a definitaion.
-  std::string grpc_get_joint_array();
+  hardware_interface::return_type grpc_get_joint_array();
+
+  double degreesToRadians(double degrees) {
+    return degrees * M_PI / 180.0;
+  }
+
+  std::vector<double> degreesToRadians_x3plus(std::vector<double> joints);
 
 private:
   // Parameters for the RRBot simulation

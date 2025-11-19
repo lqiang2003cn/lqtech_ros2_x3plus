@@ -208,26 +208,7 @@ hardware_interface::CallbackReturn X3PlusPositionOnlyHardware::on_deactivate(
 hardware_interface::return_type X3PlusPositionOnlyHardware::read(
   const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
 {
-  // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
-  std::stringstream ss;
-  ss << "Reading states:";
-
-  for (uint i = 0; i < hw_states_.size(); i++)
-  {
-    // Simulate RRBot's movement
-    hw_states_[i] = hw_states_[i] + (hw_commands_[i] - hw_states_[i]) / hw_slowdown_;
-
-    ss << std::fixed << std::setprecision(2) << std::endl
-       << "\t" << hw_states_[i] << " for joint '" << info_.joints[i].name << "'";
-  }
-  RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 500, "%s", ss.str().c_str());
-  // END: This part here is for exemplary purposes - Please do not copy to your production code
-
-  // test: call a grpc:
-  std::string reply = this->grpc_get_joint_array();
-  std::cout << "Greeter received: " << reply << std::endl;
-  
-  return hardware_interface::return_type::OK;
+  return this->grpc_get_joint_array();
 }
 
 hardware_interface::return_type X3PlusPositionOnlyHardware::write(
@@ -250,7 +231,7 @@ hardware_interface::return_type X3PlusPositionOnlyHardware::write(
 }
 
 // must specify 'X3PlusPositionOnlyHardware::' before method 'SayHello', otherwise, stub_ could not be found 
-std::string X3PlusPositionOnlyHardware::grpc_get_joint_array() {
+hardware_interface::return_type X3PlusPositionOnlyHardware::grpc_get_joint_array() {
   // Data we are sending to the server.
   Empty request;
 
@@ -266,17 +247,38 @@ std::string X3PlusPositionOnlyHardware::grpc_get_joint_array() {
 
   // Act upon its status.
   if (status.ok()) {
-    std::cout << "Received " << reply.joint_array_size() << " joint values." << std::endl;
-    for (int i = 0; i < reply.joint_array_size(); ++i) {
-        int32_t value = reply.joint_array(i);
-        std::cout << "Joint " << i << ": " << value << std::endl;
+    const auto& reply_array = reply.joint_array();
+    // 2. Create the target std::vector<double>
+    std::vector<double> position_in_degree;
+    for (int32_t value : reply_array) {
+        position_in_degree.push_back(static_cast<double>(value));
     }
-    return "ok";
+    std::vector<double> position_x3plus = degreesToRadians_x3plus(position_in_degree);
+    for (int i = 0; i < position_x3plus.size(); ++i) {
+      double value = position_x3plus[i];
+      hw_states_[i] = value;
+      std::cout << "read Joint " << i << ": " << value << std::endl;
+    }
+    return hardware_interface::return_type::OK;
   } else {
-    std::cout << status.error_code() << ": " << status.error_message()
-              << std::endl;
-    return "lqtechError: RPC failed";
+    std::cout << status.error_code() << ": " << status.error_message() << std::endl;
+    return hardware_interface::return_type::ERROR;
   }
+}
+
+std::vector<double> X3PlusPositionOnlyHardware::degreesToRadians_x3plus(std::vector<double> joints){
+    std::vector<double> mid = {90.0, 90.0, 90.0, 90.0, 90.0, 90.0};
+    std::vector<double> array(joints.size());
+
+    for (size_t i = 0; i < joints.size(); ++i) {
+        array[i] = joints[i] - mid[i];
+    }
+    const double DEG2RAD = M_PI / 180.0;
+    std::vector<double> position_x3plus(array.size());
+    for (size_t i = 0; i < array.size(); ++i) {
+        position_x3plus[i] = array[i] * DEG2RAD;
+    }
+    return position_x3plus;
 }
 
 
