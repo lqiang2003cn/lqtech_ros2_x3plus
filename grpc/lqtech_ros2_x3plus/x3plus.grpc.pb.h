@@ -51,6 +51,13 @@ class RosmasterServices final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::x3plus::ResultResponse>> PrepareAsyncsetJointPositionArray(::grpc::ClientContext* context, const ::x3plus::JointPosititonArray& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::x3plus::ResultResponse>>(PrepareAsyncsetJointPositionArrayRaw(context, request, cq));
     }
+    virtual ::grpc::Status setJointPositionSingle(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest& request, ::x3plus::ResultResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::x3plus::ResultResponse>> AsyncsetJointPositionSingle(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::x3plus::ResultResponse>>(AsyncsetJointPositionSingleRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::x3plus::ResultResponse>> PrepareAsyncsetJointPositionSingle(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::x3plus::ResultResponse>>(PrepareAsyncsetJointPositionSingleRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -58,6 +65,8 @@ class RosmasterServices final {
       virtual void getJointPositionArray(::grpc::ClientContext* context, const ::x3plus::Empty* request, ::x3plus::JointPosititonArray* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void setJointPositionArray(::grpc::ClientContext* context, const ::x3plus::JointPosititonArray* request, ::x3plus::ResultResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void setJointPositionArray(::grpc::ClientContext* context, const ::x3plus::JointPosititonArray* request, ::x3plus::ResultResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void setJointPositionSingle(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest* request, ::x3plus::ResultResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void setJointPositionSingle(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest* request, ::x3plus::ResultResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -67,6 +76,8 @@ class RosmasterServices final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::x3plus::JointPosititonArray>* PrepareAsyncgetJointPositionArrayRaw(::grpc::ClientContext* context, const ::x3plus::Empty& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::x3plus::ResultResponse>* AsyncsetJointPositionArrayRaw(::grpc::ClientContext* context, const ::x3plus::JointPosititonArray& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::x3plus::ResultResponse>* PrepareAsyncsetJointPositionArrayRaw(::grpc::ClientContext* context, const ::x3plus::JointPosititonArray& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::x3plus::ResultResponse>* AsyncsetJointPositionSingleRaw(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::x3plus::ResultResponse>* PrepareAsyncsetJointPositionSingleRaw(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -85,6 +96,13 @@ class RosmasterServices final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::x3plus::ResultResponse>> PrepareAsyncsetJointPositionArray(::grpc::ClientContext* context, const ::x3plus::JointPosititonArray& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::x3plus::ResultResponse>>(PrepareAsyncsetJointPositionArrayRaw(context, request, cq));
     }
+    ::grpc::Status setJointPositionSingle(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest& request, ::x3plus::ResultResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::x3plus::ResultResponse>> AsyncsetJointPositionSingle(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::x3plus::ResultResponse>>(AsyncsetJointPositionSingleRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::x3plus::ResultResponse>> PrepareAsyncsetJointPositionSingle(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::x3plus::ResultResponse>>(PrepareAsyncsetJointPositionSingleRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
@@ -92,6 +110,8 @@ class RosmasterServices final {
       void getJointPositionArray(::grpc::ClientContext* context, const ::x3plus::Empty* request, ::x3plus::JointPosititonArray* response, ::grpc::ClientUnaryReactor* reactor) override;
       void setJointPositionArray(::grpc::ClientContext* context, const ::x3plus::JointPosititonArray* request, ::x3plus::ResultResponse* response, std::function<void(::grpc::Status)>) override;
       void setJointPositionArray(::grpc::ClientContext* context, const ::x3plus::JointPosititonArray* request, ::x3plus::ResultResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void setJointPositionSingle(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest* request, ::x3plus::ResultResponse* response, std::function<void(::grpc::Status)>) override;
+      void setJointPositionSingle(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest* request, ::x3plus::ResultResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -107,8 +127,11 @@ class RosmasterServices final {
     ::grpc::ClientAsyncResponseReader< ::x3plus::JointPosititonArray>* PrepareAsyncgetJointPositionArrayRaw(::grpc::ClientContext* context, const ::x3plus::Empty& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::x3plus::ResultResponse>* AsyncsetJointPositionArrayRaw(::grpc::ClientContext* context, const ::x3plus::JointPosititonArray& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::x3plus::ResultResponse>* PrepareAsyncsetJointPositionArrayRaw(::grpc::ClientContext* context, const ::x3plus::JointPosititonArray& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::x3plus::ResultResponse>* AsyncsetJointPositionSingleRaw(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::x3plus::ResultResponse>* PrepareAsyncsetJointPositionSingleRaw(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_getJointPositionArray_;
     const ::grpc::internal::RpcMethod rpcmethod_setJointPositionArray_;
+    const ::grpc::internal::RpcMethod rpcmethod_setJointPositionSingle_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -118,6 +141,7 @@ class RosmasterServices final {
     virtual ~Service();
     virtual ::grpc::Status getJointPositionArray(::grpc::ServerContext* context, const ::x3plus::Empty* request, ::x3plus::JointPosititonArray* response);
     virtual ::grpc::Status setJointPositionArray(::grpc::ServerContext* context, const ::x3plus::JointPosititonArray* request, ::x3plus::ResultResponse* response);
+    virtual ::grpc::Status setJointPositionSingle(::grpc::ServerContext* context, const ::x3plus::SingleJointPositionRequest* request, ::x3plus::ResultResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_getJointPositionArray : public BaseClass {
@@ -159,7 +183,27 @@ class RosmasterServices final {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_getJointPositionArray<WithAsyncMethod_setJointPositionArray<Service > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_setJointPositionSingle : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_setJointPositionSingle() {
+      ::grpc::Service::MarkMethodAsync(2);
+    }
+    ~WithAsyncMethod_setJointPositionSingle() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status setJointPositionSingle(::grpc::ServerContext* /*context*/, const ::x3plus::SingleJointPositionRequest* /*request*/, ::x3plus::ResultResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestsetJointPositionSingle(::grpc::ServerContext* context, ::x3plus::SingleJointPositionRequest* request, ::grpc::ServerAsyncResponseWriter< ::x3plus::ResultResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_getJointPositionArray<WithAsyncMethod_setJointPositionArray<WithAsyncMethod_setJointPositionSingle<Service > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_getJointPositionArray : public BaseClass {
    private:
@@ -214,7 +258,34 @@ class RosmasterServices final {
     virtual ::grpc::ServerUnaryReactor* setJointPositionArray(
       ::grpc::CallbackServerContext* /*context*/, const ::x3plus::JointPosititonArray* /*request*/, ::x3plus::ResultResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_getJointPositionArray<WithCallbackMethod_setJointPositionArray<Service > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_setJointPositionSingle : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_setJointPositionSingle() {
+      ::grpc::Service::MarkMethodCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::x3plus::SingleJointPositionRequest, ::x3plus::ResultResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::x3plus::SingleJointPositionRequest* request, ::x3plus::ResultResponse* response) { return this->setJointPositionSingle(context, request, response); }));}
+    void SetMessageAllocatorFor_setJointPositionSingle(
+        ::grpc::MessageAllocator< ::x3plus::SingleJointPositionRequest, ::x3plus::ResultResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::x3plus::SingleJointPositionRequest, ::x3plus::ResultResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_setJointPositionSingle() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status setJointPositionSingle(::grpc::ServerContext* /*context*/, const ::x3plus::SingleJointPositionRequest* /*request*/, ::x3plus::ResultResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* setJointPositionSingle(
+      ::grpc::CallbackServerContext* /*context*/, const ::x3plus::SingleJointPositionRequest* /*request*/, ::x3plus::ResultResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_getJointPositionArray<WithCallbackMethod_setJointPositionArray<WithCallbackMethod_setJointPositionSingle<Service > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_getJointPositionArray : public BaseClass {
@@ -246,6 +317,23 @@ class RosmasterServices final {
     }
     // disable synchronous version of this method
     ::grpc::Status setJointPositionArray(::grpc::ServerContext* /*context*/, const ::x3plus::JointPosititonArray* /*request*/, ::x3plus::ResultResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_setJointPositionSingle : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_setJointPositionSingle() {
+      ::grpc::Service::MarkMethodGeneric(2);
+    }
+    ~WithGenericMethod_setJointPositionSingle() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status setJointPositionSingle(::grpc::ServerContext* /*context*/, const ::x3plus::SingleJointPositionRequest* /*request*/, ::x3plus::ResultResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -291,6 +379,26 @@ class RosmasterServices final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_setJointPositionSingle : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_setJointPositionSingle() {
+      ::grpc::Service::MarkMethodRaw(2);
+    }
+    ~WithRawMethod_setJointPositionSingle() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status setJointPositionSingle(::grpc::ServerContext* /*context*/, const ::x3plus::SingleJointPositionRequest* /*request*/, ::x3plus::ResultResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestsetJointPositionSingle(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawCallbackMethod_getJointPositionArray : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -332,6 +440,28 @@ class RosmasterServices final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* setJointPositionArray(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_setJointPositionSingle : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_setJointPositionSingle() {
+      ::grpc::Service::MarkMethodRawCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->setJointPositionSingle(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_setJointPositionSingle() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status setJointPositionSingle(::grpc::ServerContext* /*context*/, const ::x3plus::SingleJointPositionRequest* /*request*/, ::x3plus::ResultResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* setJointPositionSingle(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
@@ -388,9 +518,36 @@ class RosmasterServices final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedsetJointPositionArray(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::x3plus::JointPosititonArray,::x3plus::ResultResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_getJointPositionArray<WithStreamedUnaryMethod_setJointPositionArray<Service > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_setJointPositionSingle : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_setJointPositionSingle() {
+      ::grpc::Service::MarkMethodStreamed(2,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::x3plus::SingleJointPositionRequest, ::x3plus::ResultResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::x3plus::SingleJointPositionRequest, ::x3plus::ResultResponse>* streamer) {
+                       return this->StreamedsetJointPositionSingle(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_setJointPositionSingle() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status setJointPositionSingle(::grpc::ServerContext* /*context*/, const ::x3plus::SingleJointPositionRequest* /*request*/, ::x3plus::ResultResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedsetJointPositionSingle(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::x3plus::SingleJointPositionRequest,::x3plus::ResultResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_getJointPositionArray<WithStreamedUnaryMethod_setJointPositionArray<WithStreamedUnaryMethod_setJointPositionSingle<Service > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_getJointPositionArray<WithStreamedUnaryMethod_setJointPositionArray<Service > > StreamedService;
+  typedef WithStreamedUnaryMethod_getJointPositionArray<WithStreamedUnaryMethod_setJointPositionArray<WithStreamedUnaryMethod_setJointPositionSingle<Service > > > StreamedService;
 };
 
 }  // namespace x3plus

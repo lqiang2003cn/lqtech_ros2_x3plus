@@ -80,11 +80,13 @@ public:
   // just declare, no implementation. If you write {} after the following, it will be regarded as a definitaion.
   hardware_interface::return_type grpc_get_joint_array();
 
-  double degreesToRadians(double degrees) {
-    return degrees * M_PI / 180.0;
-  }
+  hardware_interface::return_type grpc_set_joint_single(std::string joint_name, double joint_value_radius);
 
-  std::vector<double> degreesToRadians_x3plus(std::vector<double> joints);
+  std::vector<double> degrees_to_radians_x3plus(std::vector<double> joints);
+
+  int radian_to_degree_x3plus(double joint_radius);
+  std::vector<int> radian_to_degree_x3plus_array(std::vector<double> joints);
+
 
 private:
   // Parameters for the RRBot simulation

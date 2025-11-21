@@ -43,6 +43,8 @@ using grpc::Status;
 using x3plus::RosmasterServices;
 using x3plus::JointPosititonArray;
 using x3plus::Empty;
+using x3plus::SingleJointPositionRequest;
+using x3plus::ResultResponse;
 
 namespace lqtech_ros2_x3plus
 {
@@ -215,34 +217,21 @@ hardware_interface::return_type X3PlusPositionOnlyHardware::write(
   const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
 {
   // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
-  std::stringstream ss;
-  ss << "Writing commands:";
+  return this->grpc_set_joint_single("arm_joint1", hw_commands_[0]);
+    // // Simulate sending commands to the hardware
+    // ss << std::fixed << std::setprecision(2) << std::endl
+    //    << "\t" << hw_commands_[i] << " for joint '" << info_.joints[i].name << "'";
+  // RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 500, "%s", ss.str().c_str());
+  // // END: This part here is for exemplary purposes - Please do not copy to your production code
 
-  for (uint i = 0; i < hw_commands_.size(); i++)
-  {
-    // Simulate sending commands to the hardware
-    ss << std::fixed << std::setprecision(2) << std::endl
-       << "\t" << hw_commands_[i] << " for joint '" << info_.joints[i].name << "'";
-  }
-  RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 500, "%s", ss.str().c_str());
-  // END: This part here is for exemplary purposes - Please do not copy to your production code
-
-  return hardware_interface::return_type::OK;
+  // return hardware_interface::return_type::OK;
 }
 
 // must specify 'X3PlusPositionOnlyHardware::' before method 'SayHello', otherwise, stub_ could not be found 
 hardware_interface::return_type X3PlusPositionOnlyHardware::grpc_get_joint_array() {
-  // Data we are sending to the server.
   Empty request;
-
-  // Container for the data we expect from the server.
   JointPosititonArray reply;
-
-  // Context for the client. It could be used to convey extra information to
-  // the server and/or tweak certain RPC behaviors.
   ClientContext context;
-
-  // The actual RPC.
   Status status = stub_->getJointPositionArray(&context, request, &reply);
 
   // Act upon its status.
@@ -253,11 +242,11 @@ hardware_interface::return_type X3PlusPositionOnlyHardware::grpc_get_joint_array
     for (int32_t value : reply_array) {
         position_in_degree.push_back(static_cast<double>(value));
     }
-    std::vector<double> position_x3plus = degreesToRadians_x3plus(position_in_degree);
+    std::vector<double> position_x3plus = degrees_to_radians_x3plus(position_in_degree);
     for (int i = 0; i < position_x3plus.size(); ++i) {
       double value = position_x3plus[i];
       hw_states_[i] = value;
-      std::cout << "read Joint " << i << ": " << value << std::endl;
+      //std::cout << "read Joint " << i << ": " << value << std::endl;
     }
     return hardware_interface::return_type::OK;
   } else {
@@ -266,7 +255,24 @@ hardware_interface::return_type X3PlusPositionOnlyHardware::grpc_get_joint_array
   }
 }
 
-std::vector<double> X3PlusPositionOnlyHardware::degreesToRadians_x3plus(std::vector<double> joints){
+hardware_interface::return_type X3PlusPositionOnlyHardware::grpc_set_joint_single(std::string joint_name, double joint_value_radius){
+  // Data we are sending to the server.
+  SingleJointPositionRequest request;
+  request.set_joint_name(joint_name);
+  request.set_joint_value(radian_to_degree_x3plus(joint_value_radius));
+  ResultResponse reply;
+  ClientContext context;
+  Status status = stub_->setJointPositionSingle(&context, request, &reply);
+
+  if (status.ok()) {
+    return hardware_interface::return_type::OK;
+  } else {
+    return hardware_interface::return_type::ERROR;
+  }
+}
+
+
+std::vector<double> X3PlusPositionOnlyHardware::degrees_to_radians_x3plus(std::vector<double> joints){
     std::vector<double> mid = {90.0, 90.0, 90.0, 90.0, 90.0, 90.0};
     std::vector<double> array(joints.size());
 
@@ -281,6 +287,20 @@ std::vector<double> X3PlusPositionOnlyHardware::degreesToRadians_x3plus(std::vec
     return position_x3plus;
 }
 
+
+int X3PlusPositionOnlyHardware::radian_to_degree_x3plus(double joint_radius){
+  // Use the built-in M_PI constant
+  const double RAD2DEG = 180.0 / M_PI;
+  int joint_position_int = static_cast<int>(joint_radius * RAD2DEG + 90);
+  return joint_position_int;
+}
+
+std::vector<int> X3PlusPositionOnlyHardware::radian_to_degree_x3plus_array(std::vector<double> joint_position_radius){
+  std::vector<double> result(joint_position_radius.size());
+  for (size_t i = 0; i < joint_position_radius.size(); ++i) {
+    result[i] = this->radian_to_degree_x3plus(joint_position_radius[i]);
+  }
+}
 
 }  // namespace lqtech_ros2_x3plus
 

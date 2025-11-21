@@ -9,6 +9,8 @@ service RosmasterServices {
 
   rpc setJointPositionArray(JointPosititonArray) returns (ResultResponse) {}
 
+  rpc setJointPositionSingle(SingleJointPositionRequest) returns (ResultResponse) {}
+
 }
 
 message Empty {}

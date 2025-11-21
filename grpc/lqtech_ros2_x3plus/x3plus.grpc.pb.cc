@@ -25,6 +25,7 @@ namespace x3plus {
 static const char* RosmasterServices_method_names[] = {
   "/x3plus.RosmasterServices/getJointPositionArray",
   "/x3plus.RosmasterServices/setJointPositionArray",
+  "/x3plus.RosmasterServices/setJointPositionSingle",
 };
 
 std::unique_ptr< RosmasterServices::Stub> RosmasterServices::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -36,6 +37,7 @@ std::unique_ptr< RosmasterServices::Stub> RosmasterServices::NewStub(const std::
 RosmasterServices::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
   : channel_(channel), rpcmethod_getJointPositionArray_(RosmasterServices_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_setJointPositionArray_(RosmasterServices_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_setJointPositionSingle_(RosmasterServices_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status RosmasterServices::Stub::getJointPositionArray(::grpc::ClientContext* context, const ::x3plus::Empty& request, ::x3plus::JointPosititonArray* response) {
@@ -84,6 +86,29 @@ void RosmasterServices::Stub::async::setJointPositionArray(::grpc::ClientContext
   return result;
 }
 
+::grpc::Status RosmasterServices::Stub::setJointPositionSingle(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest& request, ::x3plus::ResultResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::x3plus::SingleJointPositionRequest, ::x3plus::ResultResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_setJointPositionSingle_, context, request, response);
+}
+
+void RosmasterServices::Stub::async::setJointPositionSingle(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest* request, ::x3plus::ResultResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::x3plus::SingleJointPositionRequest, ::x3plus::ResultResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_setJointPositionSingle_, context, request, response, std::move(f));
+}
+
+void RosmasterServices::Stub::async::setJointPositionSingle(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest* request, ::x3plus::ResultResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_setJointPositionSingle_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::x3plus::ResultResponse>* RosmasterServices::Stub::PrepareAsyncsetJointPositionSingleRaw(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::x3plus::ResultResponse, ::x3plus::SingleJointPositionRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_setJointPositionSingle_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::x3plus::ResultResponse>* RosmasterServices::Stub::AsyncsetJointPositionSingleRaw(::grpc::ClientContext* context, const ::x3plus::SingleJointPositionRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncsetJointPositionSingleRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 RosmasterServices::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       RosmasterServices_method_names[0],
@@ -105,6 +130,16 @@ RosmasterServices::Service::Service() {
              ::x3plus::ResultResponse* resp) {
                return service->setJointPositionArray(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      RosmasterServices_method_names[2],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< RosmasterServices::Service, ::x3plus::SingleJointPositionRequest, ::x3plus::ResultResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](RosmasterServices::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::x3plus::SingleJointPositionRequest* req,
+             ::x3plus::ResultResponse* resp) {
+               return service->setJointPositionSingle(ctx, req, resp);
+             }, this)));
 }
 
 RosmasterServices::Service::~Service() {
@@ -118,6 +153,13 @@ RosmasterServices::Service::~Service() {
 }
 
 ::grpc::Status RosmasterServices::Service::setJointPositionArray(::grpc::ServerContext* context, const ::x3plus::JointPosititonArray* request, ::x3plus::ResultResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status RosmasterServices::Service::setJointPositionSingle(::grpc::ServerContext* context, const ::x3plus::SingleJointPositionRequest* request, ::x3plus::ResultResponse* response) {
   (void) context;
   (void) request;
   (void) response;

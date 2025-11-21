@@ -168,18 +168,20 @@ const char descriptor_table_protodef_x3plus_2eproto[] ABSL_ATTRIBUTE_SECTION_VAR
     "eJointPositionRequest\022\022\n\njoint_name\030\001 \001("
     "\t\022\023\n\013joint_value\030\002 \001(\005\" \n\016ResultResponse"
     "\022\016\n\006result\030\001 \001(\t\"*\n\023JointPosititonArray\022"
-    "\023\n\013joint_array\030\001 \003(\0052\252\001\n\021RosmasterServic"
+    "\023\n\013joint_array\030\001 \003(\0052\202\002\n\021RosmasterServic"
     "es\022E\n\025getJointPositionArray\022\r.x3plus.Emp"
     "ty\032\033.x3plus.JointPosititonArray\"\000\022N\n\025set"
     "JointPositionArray\022\033.x3plus.JointPositit"
-    "onArray\032\026.x3plus.ResultResponse\"\000b\006proto"
-    "3"
+    "onArray\032\026.x3plus.ResultResponse\"\000\022V\n\026set"
+    "JointPositionSingle\022\".x3plus.SingleJoint"
+    "PositionRequest\032\026.x3plus.ResultResponse\""
+    "\000b\006proto3"
 };
 static ::absl::once_flag descriptor_table_x3plus_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_x3plus_2eproto = {
     false,
     false,
-    361,
+    449,
     descriptor_table_protodef_x3plus_2eproto,
     "x3plus.proto",
     &descriptor_table_x3plus_2eproto_once,
